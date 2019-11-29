@@ -1,53 +1,71 @@
 import React, {useState} from 'react';
-import {Icon, Menu, Layout, Input} from "antd";
+import {Icon, Layout, Menu} from "antd";
+import {Link} from "react-router-dom";
+import {SearchNotes} from "../Search/SearchNotes";
 
 const {Sider} = Layout;
 const {SubMenu} = Menu;
-const {Search} = Input;
 
 export const SideNav = props => {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <Sider
-      theme="light"
-      collapsible
-      collapsed={collapsed}
-      onCollapse={setCollapsed}
-    >
-      <div className="logo"/>
-      <Menu
-        onSelect={(item, key, selectedKeys) => console.dir({item, key, selectedKeys})}
-        theme="light"
-        defaultSelectedKeys={['1']}
-        mode="inline"
-        inlineIndent={10}
-      >
-        <Menu.Item key="2">
-          <Icon type="home"/>
-          <span>Home</span>
-        </Menu.Item>
-        <SubMenu
-          popupClassName="popup"
-          key="sub1"
-          title={
-            <span>
+	<Sider
+	  theme="light"
+	  collapsible
+	  collapsed={collapsed}
+	  onCollapse={setCollapsed}
+	>
+	  <Menu
+		theme="light"
+		mode="inline"
+		inlineIndent={10}
+	  >
+		<Menu.Item key={0}>
+		  <Link to="/">
+			<Icon type="home"/>
+			<span>Home</span>
+		  </Link>
+		</Menu.Item>
+		<SubMenu
+		  popupClassName="popup-notes"
+		  key={1}
+		  title={
+			<span>
               <Icon type="database"/>
               <span>Manage notes</span>
             </span>
-          }
-        >
-          <Menu.Item
-            key={3}>
-            <Search
-              placeholder="input search text"
-              onSearch={value => console.log(value)}
-            />
-          </Menu.Item>
-          <Menu.Item key="4">Browse</Menu.Item>
-          <Menu.Item key="5">Add</Menu.Item>
-        </SubMenu>
-      </Menu>
-    </Sider>
+		  }
+		>
+		  <Menu.Item key={1.1} style={{textAlign: 'center'}}>
+			<SearchNotes/>
+		  </Menu.Item>
+		  <Menu.Item key={1.2} style={{textAlign: 'center'}}>
+			<Link to="/browse">
+			  <Icon type="profile"/>
+			  Browse
+			</Link>
+		  </Menu.Item>
+		  <Menu.Item key={1.3} style={{textAlign: 'center'}}>
+			<Link to="/add">
+			  <Icon type="plus"/>
+			  Add
+			</Link>
+		  </Menu.Item>
+		  <Menu.Item key={1.4} style={{textAlign: 'center'}}>
+			<Link to="/edit">
+			  <Icon type="edit"/>
+			  Edit
+			</Link>
+		  </Menu.Item>
+		  <Menu.Item key={1.5} style={{textAlign: 'center'}}>
+			<Link to="/delete">
+			  <Icon type="delete"/>
+			  Delete
+			</Link>
+		  </Menu.Item>
+		</SubMenu>
+	  </Menu>
+	</Sider>
   );
 };

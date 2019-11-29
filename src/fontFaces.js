@@ -1,4 +1,4 @@
 export const FONT_FACES = {
-  Muli: 1,
-  IndieFlower: 2
+  Muli: 'muli',
+  IndieFlower: 'indie-flower'
 };
