@@ -7,7 +7,7 @@ const {Sider} = Layout;
 const {SubMenu} = Menu;
 
 export const SideNav = ({theme}) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
 	<Sider
