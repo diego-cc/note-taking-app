@@ -12,15 +12,16 @@ export const Home = props => {
 	  <h2
 		style={{
 		  textAlign: 'center',
+		  marginBottom: '4rem',
 		  color: props.theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`
 		}}
 	  >
 		Welcome
 	  </h2>
 	  <p>This application allows you to add, edit, delete, search and browse notes.</p>
-	  <p>To get started, click on the chevron on the bottom left corner of this page to navigate through this application
+	  <p>To get started, click on the chevron on the bottom left corner to navigate through the windows.
 	  </p>
-	  <p>The switch toggle on the top right corner of the application allows you to toggle dark mode. Give it a try!</p>
+	  <p>The switch toggle on the top right corner allows you to toggle dark mode. Give it a try!</p>
 	</div>
   )
 };

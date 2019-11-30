@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {AutoComplete, Button, Form, Input, Select,} from 'antd';
+import {AutoComplete, Button, Form, Icon, Input, Popover, Select, Tooltip,} from 'antd';
 import {TYPES} from "../../Model/Type";
 import {AppConsumer, AppContext} from "../../Context/Context";
 import {THEMES} from "../../Customisation/themes";
@@ -17,8 +17,8 @@ class AddNote extends React.Component {
 	e.preventDefault();
 	this.props.form.validateFieldsAndScroll((err, values) => {
 	  if (!err) {
-	    const note = new Note(values.title, values.body, values.type);
-	    this.props.onAddNote(note);
+		const note = new Note(values.title, values.body, values.type);
+		this.props.onAddNote(note);
 	  }
 	});
   };
@@ -94,7 +94,7 @@ class AddNote extends React.Component {
 					message: 'Please enter some text for your note',
 				  }
 				],
-			  })(<Input.TextArea allowClear={true} />)}
+			  })(<Input.TextArea allowClear={true}/>)}
 			</Form.Item>
 
 			<Form.Item
@@ -104,7 +104,17 @@ class AddNote extends React.Component {
 					{color: 'rgba(0, 0, 0, 0.85)'} :
 					{color: 'rgba(255, 255, 255, 0.65)'}
 				}>
-			  		Type
+			  		Type <span>
+					<Tooltip
+					  title={
+						<>
+						  <p>Basic types are provided</p>
+						  <p>You may change it later</p>
+						</>
+					  }>
+					<Icon type="question-circle"/>
+					</Tooltip>
+				  </span>
 		    	</span>
 			  }
 			>

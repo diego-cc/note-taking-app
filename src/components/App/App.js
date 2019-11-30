@@ -86,7 +86,7 @@ export class App extends React.Component {
 
   render() {
 	return (
-	  <AppProvider value={{theme: this.state.theme}}>
+	  <AppProvider value={this.state}>
 		<Layout>
 		  <Header
 			style={{
@@ -139,14 +139,13 @@ export class App extends React.Component {
 			  >
 				<Switch>
 				  <Route path="/" exact
-						 render={props => <Home theme={this.state.theme} {...props} />}/>
+						 render={props => <Home {...props} />}/>
 				  <Route path="/browse"
-						 render={props => <BrowseNotes theme={this.state.theme} {...props} />}/>
+						 render={props => <BrowseNotes {...props} />}/>
 				  <Route path="/add"
 						 render={props =>
 						   <AddNote
 							 onAddNote={this.onAddNote}
-							 theme={this.state.theme}
 							 {...props}
 						   />
 						 }
@@ -155,7 +154,6 @@ export class App extends React.Component {
 						 render={props =>
 						   <EditNote
 							 onEditNote={this.onEditNote}
-							 theme={this.state.theme}
 							 {...props}
 						   />
 						 }
@@ -163,13 +161,11 @@ export class App extends React.Component {
 				  <Route path="/delete"
 						 render={props =>
 						   <DeleteNote
-							 onDeleteNote={this.onDeleteNote}
-							 theme={this.state.theme}
-							 {...props}
+							 onDeleteNote={this.onDeleteNote} {...props}
 						   />
 						 }
 				  />
-				  <Route path="*" render={props => <NotFound theme={this.state.theme} {...props} />}/>
+				  <Route path="*" render={props => <NotFound {...props} />}/>
 				</Switch>
 			  </div>
 			</Content>
@@ -183,7 +179,7 @@ export class App extends React.Component {
 			  fontSize: '2rem'
 			}}
 		  >
-			Copyright &copy; Diego C. 2019
+			Copyright &copy; 2019 Diego C.
 		  </Footer>
 		</Layout>
 	  </AppProvider>
