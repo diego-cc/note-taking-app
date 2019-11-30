@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 
 export class Note {
 
-  constructor(title, body, type = TYPES.Personal, tags = [], id = uuidv4(), createdAt = moment(moment(), 'DD/MM/YYYY').format('DD/MM/YYYY'), updatedAt = null) {
+  constructor(title, body, type = TYPES.Personal, tags = [], id = uuidv4(), createdAt = moment(moment(), 'DD/MM/YYYY hh:mm:ss A').format('DD/MM/YYYY hh:mm:ss A'), updatedAt = null) {
     this.title = title;
     this.body = body;
     this.type = type;

@@ -2,31 +2,25 @@ import React from 'react';
 import {Col, Icon, Layout, Row, Select, Switch as ToggleSwitch, Typography} from 'antd';
 import {SideNav} from "../Nav/SideNav";
 import {Route, Switch} from 'react-router-dom';
-import {FONT_FACES} from "../../fontFaces";
-import {THEMES} from "../../themes";
+import {FONT_FACES} from "../../Customisation/fontFaces";
+import {THEMES} from "../../Customisation/themes";
 import {Home} from "../Home/Home";
 import {BrowseNotes} from "../Browse/BrowseNotes";
 import {AddNote} from "../Add/AddNote";
 import {EditNote} from '../Edit/EditNote';
 import {DeleteNote} from '../Delete/DeleteNote';
 import {NotFound} from "../404/NotFound";
+import {NoteManager} from "../../Model/NoteManager";
+import {AppProvider} from "../../Context/Context";
 
 const {Content, Footer, Header} = Layout;
-const {Option} = Select;
-const {Title, Text} = Typography;
 
 export class App extends React.Component {
   state = {
+	noteManager: new NoteManager(),
 	fontFace: FONT_FACES.Muli,
 	theme: THEMES.Light,
-	paths: [`/`, `Add`, `Browse`],
 	windowSize: ''
-  };
-
-  switchPaths = paths => {
-	this.setState({
-	  paths
-	})
   };
 
   onFontFaceChange = () => {
@@ -53,91 +47,146 @@ export class App extends React.Component {
 	}
   };
 
+  onAddNote = note => {
+	this.setState(prevState => {
+	  const {noteManager} = prevState;
+	  noteManager.addNote(note);
+
+	  return ({noteManager})
+	}, () => {
+	  console.log('added a new note! note manager:');
+	  console.dir(this.state.noteManager);
+	})
+  };
+
+  onEditNote = updatedNote => {
+	this.setState(prevState => {
+	  const {noteManager} = prevState;
+	  noteManager.editNote(updatedNote);
+
+	  return ({noteManager})
+	})
+  };
+
+  onDeleteNote = noteID => {
+	this.setState(prevState => {
+	  const {noteManager} = prevState;
+	  noteManager.deleteNoteByID(noteID);
+
+	  return ({noteManager})
+	})
+  };
+
   componentDidMount() {
 	window.addEventListener('resize', this.setUpWindowSize);
 	window.addEventListener('orientationChange', this.setUpWindowSize);
+
+	// fetch notes from remote here
   }
 
   render() {
 	return (
-	  <Layout>
-		<Header
-		  style={{
-			padding: 0,
+	  <AppProvider value={{theme: this.state.theme}}>
+		<Layout>
+		  <Header
+			style={{
+			  padding: 0,
+			  backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`
+			}}>
+			<Row>
+			  <Col span={8} offset={8}>
+				<h1
+				  style={{
+					margin: 0,
+					padding: 0,
+					fontSize: '2.5rem',
+					textAlign: "center",
+					color: this.state.theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`
+				  }}>
+				  Note taking app
+				</h1>
+			  </Col>
+			  <Col
+				sm={{
+				  span: 2,
+				  offset: 6
+				}}
+				xs={{
+				  span: 4,
+				  offset: 4
+				}}
+			  >
+				<ToggleSwitch
+				  onChange={this.onThemeChange}
+				  defaultChecked
+				  checkedChildren={<Icon type="bulb"/>}
+				  unCheckedChildren={<Icon type="bulb"/>}
+				/>
+			  </Col>
+			</Row>
+		  </Header>
+
+		  <Layout style={{
+			minHeight: '100vh',
 			backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`
 		  }}>
-		  <Row>
-			<Col span={8} offset={8}>
-			  <h1
+			<SideNav theme={this.state.theme}/>
+			<Content style={{margin: '0 1rem'}}>
+			  <div
 				style={{
-				  margin: 0,
-				  padding: 0,
-				  fontSize: '2.5rem',
-				  textAlign: "center",
-				  color: this.state.theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`
-				}}>
-				Note taking app
-			  </h1>
-			</Col>
-			<Col
-			  sm={{
-				span: 2,
-				offset: 6
-			  }}
-			  xs={{
-				span: 4,
-				offset: 4
-			  }}
-			>
-			  <ToggleSwitch
-				onChange={this.onThemeChange}
-				defaultChecked
-				checkedChildren={<Icon type="bulb"/>}
-				unCheckedChildren={<Icon type="bulb"/>}
-			  />
-			</Col>
-		  </Row>
-		</Header>
+				  padding: '2rem'
+				}}
+			  >
+				<Switch>
+				  <Route path="/" exact
+						 render={props => <Home theme={this.state.theme} {...props} />}/>
+				  <Route path="/browse"
+						 render={props => <BrowseNotes theme={this.state.theme} {...props} />}/>
+				  <Route path="/add"
+						 render={props =>
+						   <AddNote
+							 onAddNote={this.onAddNote}
+							 theme={this.state.theme}
+							 {...props}
+						   />
+						 }
+				  />
+				  <Route path="/edit"
+						 render={props =>
+						   <EditNote
+							 onEditNote={this.onEditNote}
+							 theme={this.state.theme}
+							 {...props}
+						   />
+						 }
+				  />
+				  <Route path="/delete"
+						 render={props =>
+						   <DeleteNote
+							 onDeleteNote={this.onDeleteNote}
+							 theme={this.state.theme}
+							 {...props}
+						   />
+						 }
+				  />
+				  <Route path="*" render={props => <NotFound theme={this.state.theme} {...props} />}/>
+				</Switch>
+			  </div>
+			</Content>
+		  </Layout>
 
-		<Layout style={{
-		  minHeight: '100vh',
-		  backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`
-		}}>
-		  <SideNav theme={this.state.theme}/>
-		  <Content style={{margin: '0 1rem'}}>
-			<div
-			  style={{
-				padding: '2rem'
-			  }}
-			>
-			  <Switch>
-				<Route path="/" exact
-					   render={props => <Home theme={this.state.theme} {...props} />}/>
-				<Route path="/browse"
-					   render={props => <BrowseNotes theme={this.state.theme} {...props} />}/>
-				<Route path="/add"
-					   render={props => <AddNote theme={this.state.theme} {...props} />}/>
-				<Route path="/edit"
-					   render={props => <EditNote theme={this.state.theme} {...props} />}/>
-				<Route path="/delete"
-					   render={props => <DeleteNote theme={this.state.theme} {...props} />}/>
-				<Route path="*" render={props => <NotFound theme={this.state.theme} {...props} />}/>
-			  </Switch>
-			</div>
-		  </Content>
+		  <Footer
+			style={{
+			  textAlign: ((this.state.windowSize === 'xs') || (this.state.windowSize === 'xxs')) ? 'right' : 'center',
+			  backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`,
+			  color: this.state.theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`,
+			  fontSize: '2rem'
+			}}
+		  >
+			Copyright &copy; Diego C. 2019
+		  </Footer>
 		</Layout>
-
-		<Footer
-		  style={{
-			textAlign: ((this.state.windowSize === 'xs') || (this.state.windowSize === 'xxs')) ? 'right' : 'center',
-			backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`,
-			color: this.state.theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`,
-			fontSize: '2rem'
-		  }}
-		>
-		  Copyright &copy; Diego C. 2019
-		</Footer>
-	  </Layout>
+	  </AppProvider>
 	)
   }
 }

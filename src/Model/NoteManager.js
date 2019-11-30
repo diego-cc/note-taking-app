@@ -31,9 +31,9 @@ export class NoteManager {
 	}
   }
 
-  deleteNote(note, updateRemote = true) {
-	if (this.findNoteByID(note.id)) {
-	  this.notes.splice(this.findNoteIndexByID(note.id), 1);
+  deleteNoteByID(noteID, updateRemote = true) {
+	if (this.findNoteByID(noteID)) {
+	  this.notes.splice(this.findNoteIndexByID(noteID), 1);
 	}
   }
 }

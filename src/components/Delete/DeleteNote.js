@@ -1,5 +1,5 @@
 import React from 'react';
-import {THEMES} from "../../themes";
+import {THEMES} from "../../Customisation/themes";
 
 export const DeleteNote = props => (
   <div>
