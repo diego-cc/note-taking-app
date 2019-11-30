@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {AppConsumer} from "../../Context/Context";
-import {Card, Collapse, Icon, Typography} from "antd";
+import {Card, Collapse, Icon, Skeleton, Typography} from "antd";
 
 const {Meta} = Card;
 const {Panel} = Collapse;
@@ -17,8 +17,9 @@ export const ViewNote = ({note}) => {
   return (
 	<AppConsumer>
 	  {
-		({theme}) => (
+		({theme, loading}) => (
 		  <Collapse
+			style={{marginBottom: '5rem'}}
 			activeKey={detailsActive ? '1' : ''}
 		  >
 			<Panel
@@ -38,21 +39,23 @@ export const ViewNote = ({note}) => {
 					  onClick={() => setDetailsActive(!detailsActive)}/>
 				  ]}
 				>
-				  <Meta
-					title={<Text editable={true}>note.title</Text>}
-					description={
-					  <>
-						<Text
-						  editable={{
-							onChange: detail => onChangeDetails('type', detail)
-						  }}
-						>
-						  {note.type}
-						</Text>
-						<p>{note.createdAt}</p>
-					  </>
-					}
-				  />
+				  <Skeleton loading={loading} avatar active>
+					<Meta
+					  title={<Text editable={true}>{note.title}</Text>}
+					  description={
+						<>
+						  <Text
+							editable={{
+							  onChange: detail => onChangeDetails('type', detail)
+							}}
+						  >
+							{note.type}
+						  </Text>
+						  <p>{note.createdAt}</p>
+						</>
+					  }
+					/>
+				  </Skeleton>
 				</Card>
 			  }
 			>

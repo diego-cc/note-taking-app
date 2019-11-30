@@ -12,6 +12,8 @@ import {DeleteNote} from '../Delete/DeleteNote';
 import {NotFound} from "../404/NotFound";
 import {NoteManager} from "../../Model/NoteManager";
 import {AppProvider} from "../../Context/Context";
+import {db} from "../../Firebase/Firebase";
+import {Note} from "../../Model/Note";
 
 const {Content, Footer, Header} = Layout;
 
@@ -20,7 +22,8 @@ export class App extends React.Component {
 	noteManager: new NoteManager(),
 	fontFace: FONT_FACES.Muli,
 	theme: THEMES.Light,
-	windowSize: ''
+	windowSize: '',
+	loading: true
   };
 
   onFontFaceChange = () => {
@@ -48,14 +51,16 @@ export class App extends React.Component {
   };
 
   onAddNote = note => {
-	this.setState(prevState => {
-	  const {noteManager} = prevState;
-	  noteManager.addNote(note);
-
-	  return ({noteManager})
+    const {noteManager} = this.state;
+    this.setState({
+	  loading: true
 	}, () => {
-	  console.log('added a new note! note manager:');
-	  console.dir(this.state.noteManager);
+	  noteManager.addNote(note, true, () => {
+		this.setState({
+		  noteManager,
+		  loading: false
+		})
+	  })
 	})
   };
 
@@ -82,6 +87,23 @@ export class App extends React.Component {
 	window.addEventListener('orientationChange', this.setUpWindowSize);
 
 	// fetch notes from remote here
+	db
+	  .collection('notes')
+	  .get()
+	  .then(snap => {
+		this.setState(prevState => {
+		  const {noteManager} = prevState;
+		  snap.forEach(doc => {
+			const noteData = doc.data();
+			const note = new Note(noteData.title, noteData.body, noteData.type, null, noteData.id, noteData.createdAt, noteData.updatedAt);
+			noteManager.addNote(note, false);
+		  });
+		  return ({
+			noteManager,
+			loading: false
+		  })
+		}, () => console.dir(this.state));
+	  });
   }
 
   render() {

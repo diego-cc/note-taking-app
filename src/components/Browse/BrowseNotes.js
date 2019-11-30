@@ -2,13 +2,13 @@ import React from 'react';
 import {THEMES} from "../../Customisation/themes";
 import {AppConsumer} from "../../Context/Context";
 import {ViewNote} from "./ViewNote";
-import {Note} from "../../Model/Note";
-import {TYPES} from "../../Model/Type";
+import {Icon, Spin} from "antd";
+import {Spinner} from "../Spinner/Spinner";
 
 export const BrowseNotes = props => (
   <AppConsumer>
 	{
-	  ({theme, noteManager}) => (
+	  ({theme, noteManager, loading}) => (
 		<div>
 		  <h2
 			style={{
@@ -20,12 +20,16 @@ export const BrowseNotes = props => (
 			Browse notes
 		  </h2>
 		  {
-			noteManager.notes.map((note, index) => (
-			  <ViewNote
-				key={index}
-				note={note}
-			  />
-			))
+			(!loading && noteManager.notes.length) ?
+			  noteManager.notes.map((note, index) => (
+				<ViewNote
+				  key={index}
+				  note={note}
+				/>
+			  )) :
+			  (
+				<Spinner />
+			  )
 		  }
 		</div>
 	  )
