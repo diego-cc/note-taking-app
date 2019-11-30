@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Icon, Layout, Menu, Row, Select, Switch as ToggleSwitch} from 'antd';
+import {Col, Icon, Layout, Row, Select, Switch as ToggleSwitch, Typography} from 'antd';
 import {SideNav} from "../Nav/SideNav";
 import {Route, Switch} from 'react-router-dom';
 import {FONT_FACES} from "../../fontFaces";
@@ -13,12 +13,14 @@ import {NotFound} from "../404/NotFound";
 
 const {Content, Footer, Header} = Layout;
 const {Option} = Select;
+const {Title, Text} = Typography;
 
 export class App extends React.Component {
   state = {
 	fontFace: FONT_FACES.Muli,
 	theme: THEMES.Light,
-	paths: [`/`, `Add`, `Browse`]
+	paths: [`/`, `Add`, `Browse`],
+	windowSize: ''
   };
 
   switchPaths = paths => {
@@ -29,7 +31,7 @@ export class App extends React.Component {
 
   onFontFaceChange = () => {
 	this.setState(prevState => ({
-	  fontFace: FONT_FACES.Muli
+	  fontFace: prevState.fontFace === FONT_FACES.Muli ? FONT_FACES.IndieFlower : FONT_FACES.Muli
 	}))
   };
 
@@ -39,49 +41,102 @@ export class App extends React.Component {
 	}))
   };
 
+  setUpWindowSize = () => {
+	if (window.innerWidth < 376) {
+	  this.setState({
+		windowSize: 'xxs'
+	  })
+	} else if (window.innerWidth < 576) {
+	  this.setState({windowSize: 'xs'});
+	} else {
+	  this.setState({windowSize: ''})
+	}
+  };
+
+  componentDidMount() {
+	window.addEventListener('resize', this.setUpWindowSize);
+	window.addEventListener('orientationChange', this.setUpWindowSize);
+  }
+
   render() {
 	return (
 	  <Layout>
-		<Header style={{
-		  background: '#fff',
-		  padding: 0
-		}}>
-		  <h1
-			style={{
-			  display: 'inline-block',
-			  margin: 0,
-			  padding: 0,
-			  fontSize: '2.5rem',
-			  textAlign: "center"
-			}}>
-			Note taking app
-		  </h1>
-		  <ToggleSwitch
-			defaultChecked
-			checkedChildren={<Icon type="bulb" />}
-			unCheckedChildren={<Icon type="bulb" />}
-		  />
+		<Header
+		  style={{
+			padding: 0,
+			backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`
+		  }}>
+		  <Row>
+			<Col span={8} offset={8}>
+			  <h1
+				style={{
+				  margin: 0,
+				  padding: 0,
+				  fontSize: '2.5rem',
+				  textAlign: "center",
+				  color: this.state.theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`
+				}}>
+				Note taking app
+			  </h1>
+			</Col>
+			<Col
+			  sm={{
+				span: 2,
+				offset: 6
+			  }}
+			  xs={{
+				span: 4,
+				offset: 4
+			  }}
+			>
+			  <ToggleSwitch
+				onChange={this.onThemeChange}
+				defaultChecked
+				checkedChildren={<Icon type="bulb"/>}
+				unCheckedChildren={<Icon type="bulb"/>}
+			  />
+			</Col>
+		  </Row>
 		</Header>
 
-		<Layout style={{minHeight: '100vh'}}>
-		  <SideNav/>
+		<Layout style={{
+		  minHeight: '100vh',
+		  backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`
+		}}>
+		  <SideNav theme={this.state.theme}/>
 		  <Content style={{margin: '0 1rem'}}>
 			<div
-			  style={{padding: '2rem', backgroundColor: '#e8e8e8'}}
+			  style={{
+				padding: '2rem'
+			  }}
 			>
 			  <Switch>
-				<Route path="/" exact render={props => <Home {...props} />}/>
-				<Route path="/browse" render={props => <BrowseNotes {...props} />}/>
-				<Route path="/add" render={props => <AddNote {...props} />}/>
-				<Route path="/edit" render={props => <EditNote {...props} />}/>
-				<Route path="/delete" render={props => <DeleteNote {...props} />}/>
-				<Route path="*" render={props => <NotFound {...props} />}/>
+				<Route path="/" exact
+					   render={props => <Home theme={this.state.theme} {...props} />}/>
+				<Route path="/browse"
+					   render={props => <BrowseNotes theme={this.state.theme} {...props} />}/>
+				<Route path="/add"
+					   render={props => <AddNote theme={this.state.theme} {...props} />}/>
+				<Route path="/edit"
+					   render={props => <EditNote theme={this.state.theme} {...props} />}/>
+				<Route path="/delete"
+					   render={props => <DeleteNote theme={this.state.theme} {...props} />}/>
+				<Route path="*" render={props => <NotFound theme={this.state.theme} {...props} />}/>
 			  </Switch>
 			</div>
 		  </Content>
 		</Layout>
 
-		<Footer style={{textAlign: 'center'}}>Copyright &copy; Diego C. 2019</Footer>
+		<Footer
+		  style={{
+			textAlign: ((this.state.windowSize === 'xs') || (this.state.windowSize === 'xxs')) ? 'right' : 'center',
+			backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`,
+			color: this.state.theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`,
+			fontSize: '2rem'
+		  }}
+		>
+		  Copyright &copy; Diego C. 2019
+		</Footer>
 	  </Layout>
 	)
   }

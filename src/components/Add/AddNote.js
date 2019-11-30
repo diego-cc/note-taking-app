@@ -1,5 +1,12 @@
 import React from 'react';
+import {THEMES} from "../../themes";
 
 export const AddNote = props => (
-  <h2>Add note</h2>
+  <div>
+	<h2
+	  style={{
+		color: props.theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`
+	  }}
+	>Add note</h2>
+  </div>
 );

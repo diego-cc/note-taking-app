@@ -6,18 +6,18 @@ import {SearchNotes} from "../Search/SearchNotes";
 const {Sider} = Layout;
 const {SubMenu} = Menu;
 
-export const SideNav = props => {
+export const SideNav = ({theme}) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
 	<Sider
-	  theme="light"
+	  theme={theme}
 	  collapsible
 	  collapsed={collapsed}
 	  onCollapse={setCollapsed}
 	>
 	  <Menu
-		theme="light"
+		theme={theme}
 		mode="inline"
 		inlineIndent={10}
 	  >
