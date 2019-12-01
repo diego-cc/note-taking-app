@@ -1,6 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {AppConsumer, AppContext} from "../../Context/Context";
-import {Button, Card, Collapse, Icon, Skeleton, Typography, Modal} from "antd";
+import {Card, Collapse, Icon, Modal, Skeleton, Typography} from "antd";
 import {useHistory} from 'react-router-dom';
 
 const {confirm} = Modal;
@@ -12,6 +12,8 @@ export const NoteCard = ({note, onEditNote, onDeleteNote}) => {
   const {noteManager} = useContext(AppContext);
   const history = useHistory();
 
+  // const [currentNote, setCurrentNote] = useState(null);
+
   const [detailsActive, setDetailsActive] = useState(false);
   const [isEditing, setIsEditing] = useState({
 	title: false,
@@ -20,9 +22,9 @@ export const NoteCard = ({note, onEditNote, onDeleteNote}) => {
   });
 
   const [noteDetails, setNoteDetails] = useState({
-	title: note ? (note.title.length > 10 ? `${note.title.slice(0, 10)}...` : note.title) : '',
-	body: note ? note.body : '',
-	type: note ? (note.type.length > 10 ? `${note.type.slice(0, 10)}...` : note.type) : ''
+	title: '',
+	body: '',
+	type: ''
   });
 
   const onEditingNote = detailName => {
@@ -51,8 +53,6 @@ export const NoteCard = ({note, onEditNote, onDeleteNote}) => {
 
 	  onEditNote(updatedNote, () => {
 		const {title, type, body} = noteManager.findNoteByID(note.id);
-		console.log('title sliced? ', title.length > 10 ? `${title.slice(0, 10)}...` : title);
-		console.log('type sliced? ', type.length > 10 ? `${type.slice(0, 10)}...` : type);
 		setNoteDetails({
 		  title: title.length > 10 ? `${title.slice(0, 10)}...` : title,
 		  type: type.length > 10 ? `${type.slice(0, 10)}...` : type,
@@ -87,6 +87,16 @@ export const NoteCard = ({note, onEditNote, onDeleteNote}) => {
 	  },
 	});
   }
+
+  useEffect(() => {
+	if (note) {
+	  setNoteDetails({
+		title: note.title.length > 10 ? `${note.title.slice(0, 10)}...` : note.title,
+		body: note.body,
+		type: note.type.length > 10 ? `${note.type.slice(0, 10)}...` : note.type
+	  })
+	}
+  }, [note]);
 
   return (
 	<AppConsumer>
