@@ -52,18 +52,6 @@ export const SideNav = ({theme}) => {
 			  Add
 			</Link>
 		  </Menu.Item>
-		  <Menu.Item key={1.4} style={{textAlign: 'center'}}>
-			<Link to="/edit">
-			  <Icon type="edit"/>
-			  Edit
-			</Link>
-		  </Menu.Item>
-		  <Menu.Item key={1.5} style={{textAlign: 'center'}}>
-			<Link to="/delete">
-			  <Icon type="delete"/>
-			  Delete
-			</Link>
-		  </Menu.Item>
 		</SubMenu>
 	  </Menu>
 	</Sider>

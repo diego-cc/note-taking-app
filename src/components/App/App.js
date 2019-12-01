@@ -54,7 +54,7 @@ export class App extends React.Component {
 	}
   };
 
-  onAddNote = note => {
+  onAddNote = (note, callback) => {
 	const {noteManager} = this.state;
 	this.setState({
 	  loading: true
@@ -63,7 +63,7 @@ export class App extends React.Component {
 		this.setState({
 		  noteManager,
 		  loading: false
-		})
+		}, callback)
 	  })
 	})
   };
@@ -77,13 +77,13 @@ export class App extends React.Component {
 	}, callback)
   };
 
-  onDeleteNote = noteID => {
+  onDeleteNote = (noteID, callback) => {
 	this.setState(prevState => {
 	  const {noteManager} = prevState;
 	  noteManager.deleteNoteByID(noteID);
 
 	  return ({noteManager})
-	})
+	}, callback)
   };
 
   componentDidMount() {
@@ -189,21 +189,6 @@ export class App extends React.Component {
 						   <AddNote
 							 onAddNote={this.onAddNote}
 							 {...props}
-						   />
-						 }
-				  />
-				  <Route path="/edit"
-						 render={props =>
-						   <EditNote
-							 onEditNote={this.onEditNote}
-							 {...props}
-						   />
-						 }
-				  />
-				  <Route path="/delete"
-						 render={props =>
-						   <DeleteNote
-							 onDeleteNote={this.onDeleteNote} {...props}
 						   />
 						 }
 				  />

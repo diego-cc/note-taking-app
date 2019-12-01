@@ -18,7 +18,7 @@ export class NoteManager {
 	return this.notes.find(note => note.id === noteID);
   }
 
-  addNote(note, updateRemote = true, callback = null) {
+  addNote(note, updateRemote = true, onSuccess, onError) {
 	this.notes.push(note);
 
 	if (updateRemote) {
@@ -26,12 +26,16 @@ export class NoteManager {
 		.collection('notes')
 		.doc(note.id)
 		.set({...note})
-		.then(callback)
-		.catch(err => console.error(err))
+		.then(onSuccess)
+		.catch(err =>
+		  (onError && typeof (onError) === 'function') ?
+			onError(err) :
+			console.error(err)
+		);
 	}
   };
 
-  editNote(updatedNote, updateRemote = true, callback = null) {
+  editNote(updatedNote, updateRemote = true, onSuccess, onError) {
 	if (this.findNoteByID(updatedNote.id)) {
 	  let noteToBeUpdated = this.findNoteByID(updatedNote.id);
 	  noteToBeUpdated = updatedNote;
@@ -44,15 +48,32 @@ export class NoteManager {
 		  .collection('notes')
 		  .doc(updatedNote.id)
 		  .update({...updatedNote})
-		  .then(callback)
-		  .catch(err => console.error(err));
+		  .then(onSuccess)
+		  .catch(err =>
+			(onError && typeof (onError) === 'function') ?
+			  onError(err) :
+			  console.error(err)
+		  );
 	  }
 	}
   }
 
-  deleteNoteByID(noteID, updateRemote = true) {
+  deleteNoteByID(noteID, updateRemote = true, onSuccess, onError) {
 	if (this.findNoteByID(noteID)) {
 	  this.notes.splice(this.findNoteIndexByID(noteID), 1);
+
+	  if (updateRemote) {
+		db
+		  .collection('notes')
+		  .doc(noteID)
+		  .delete()
+		  .then(onSuccess)
+		  .catch(err =>
+			(onError && typeof (onError) === 'function') ?
+			  onError(err) :
+			  console.error(err)
+		  );
+	  }
 	}
   }
 }
