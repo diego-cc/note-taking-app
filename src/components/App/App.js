@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Icon, Layout, Row, Switch as ToggleSwitch} from 'antd';
+import {Col, Icon, Layout, notification, Row, Switch as ToggleSwitch} from 'antd';
 import {SideNav} from "../Nav/SideNav";
 import {Route, Switch} from 'react-router-dom';
 import {FONT_FACES} from "../../Customisation/fontFaces";
@@ -7,8 +7,6 @@ import {THEMES} from "../../Customisation/themes";
 import {Home} from "../Home/Home";
 import {BrowseNotes} from "../Browse/BrowseNotes";
 import {AddNote} from "../Add/AddNote";
-import {EditNote} from '../Edit/EditNote';
-import {DeleteNote} from '../Delete/DeleteNote';
 import {NotFound} from "../404/NotFound";
 import {NoteManager} from "../../Model/NoteManager";
 import {AppProvider} from "../../Context/Context";
@@ -19,13 +17,32 @@ import {ViewNote} from "../View/ViewNote";
 const {Content, Footer, Header} = Layout;
 
 export class App extends React.Component {
-  state = {
-	noteManager: new NoteManager(),
-	fontFace: FONT_FACES.Muli,
-	theme: THEMES.Light,
-	windowSize: '',
-	loading: true
-  };
+  constructor(props) {
+	super(props);
+	this.state = {
+	  noteManager: new NoteManager(),
+	  fontFace: FONT_FACES.Muli,
+	  theme: THEMES.Light,
+	  windowSize: '',
+	  loading: navigator.onLine,
+	  addedNote: false,
+	  deletedNote: false,
+	  dismissAddedNoteNotification: this.dismissAddedNoteNotification,
+	  dismissDeletedNoteNotification: this.dismissDeletedNoteNotification
+	};
+
+	this.dismissAddedNoteNotification = (callback) => {
+	  this.setState({
+		addedNote: false
+	  }, callback)
+	};
+
+	this.dismissDeletedNoteNotification = (callback) => {
+	  this.setState({
+		deletedNote: false
+	  }, callback)
+	};
+  }
 
   onFontFaceChange = () => {
 	this.setState(prevState => ({
@@ -59,11 +76,30 @@ export class App extends React.Component {
 	this.setState({
 	  loading: true
 	}, () => {
+	  if (!navigator.onLine) {
+		setTimeout(() => {
+		  this.setState({
+			loading: false,
+			addedNote: true
+		  }, () => {
+			setTimeout(() => {
+			  this.dismissAddedNoteNotification();
+			}, 3000)
+		  })
+		}, 500);
+	  }
 	  noteManager.addNote(note, true, () => {
 		this.setState({
 		  noteManager,
-		  loading: false
-		}, callback)
+		  loading: false,
+		  addedNote: true
+		}, () => {
+		  setTimeout(() => {
+			this.dismissAddedNoteNotification(callback);
+		  }, 3000)
+		})
+	  }, err => {
+		console.error(err);
 	  })
 	})
   };
@@ -82,11 +118,27 @@ export class App extends React.Component {
 	  const {noteManager} = prevState;
 	  noteManager.deleteNoteByID(noteID);
 
-	  return ({noteManager})
-	}, callback)
+	  return ({
+		noteManager,
+		deletedNote: true
+	  })
+	}, () => {
+	  callback();
+	  setTimeout(() => {
+		this.dismissDeletedNoteNotification();
+	  }, 3000)
+	})
   };
 
   componentDidMount() {
+	if (!navigator.onLine) {
+	  this.openOfflineNotification();
+	}
+
+	window.addEventListener('offline', () => {
+	  this.openOfflineNotification();
+	});
+
 	window.addEventListener('resize', this.setUpWindowSize);
 	window.addEventListener('orientationChange', this.setUpWindowSize);
 	let theme;
@@ -97,7 +149,6 @@ export class App extends React.Component {
 	  theme = JSON.parse(themeJSON);
 	  this.setState({theme})
 	}
-
 	// fetch notes from remote here
 	db
 	  .collection('notes')
@@ -115,8 +166,20 @@ export class App extends React.Component {
 			loading: false
 		  })
 		})
-	  });
+	  })
+	  .catch(err => {
+		this.setState({
+		  loading: false
+		})
+	  })
   }
+
+  openOfflineNotification = () => {
+	notification.open({
+	  message: 'You seem to be offline',
+	  description: `Don't worry though, your changes will be synchronised when you go back online`
+	})
+  };
 
   render() {
 	return (
@@ -159,7 +222,6 @@ export class App extends React.Component {
 			  </Col>
 			</Row>
 		  </Header>
-
 		  <Layout style={{
 			minHeight: '100vh',
 			backgroundColor: this.state.theme === THEMES.Light ? `rgba(255, 255, 255, 0.65)` : `#001529`

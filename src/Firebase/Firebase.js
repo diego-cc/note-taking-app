@@ -12,7 +12,19 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const db = firebase.firestore();
+// handle persistence issues here
+const handleError = error => {
+  console.error(error);
+};
 
+firebase
+  .firestore()
+  .enablePersistence({synchronizeTabs: true})
+  .then(() => console.info('Persistence enabled'))
+  .catch(err => {
+	handleError(err);
+  });
+
+const db = firebase.firestore();
 export {db}
 

@@ -1,15 +1,34 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {Icon, notification} from "antd";
 import {THEMES} from "../../Customisation/themes";
 import {AddNoteForm} from "./AddNoteForm";
-import {AppConsumer} from "../../Context/Context";
+import {AppConsumer, AppContext} from "../../Context/Context";
 import {Spinner} from "../Spinner/Spinner";
 
 export const AddNote = props => {
+  const {dismissAddedNoteNotification} = useContext(AppContext);
+
+  const openNoteAddedNotification = () => {
+	notification.open({
+	  message: 'Notification',
+	  description: 'Your note has been successfully added',
+	  icon: <Icon type="check-circle" style={{color: 'green'}}/>,
+	  duration: 3,
+	  onClose: dismissAddedNoteNotification
+	})
+  };
+
   return (
 	<AppConsumer>
 	  {
-		({theme, loading}) => (
+		({theme, loading, addedNote}) => (
 		  <>
+			{
+			  addedNote ?
+				(
+				  openNoteAddedNotification()
+				) : ''
+			}
 			<h2
 			  style={{
 				color: theme === THEMES.Light ?

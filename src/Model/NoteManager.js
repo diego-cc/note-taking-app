@@ -27,11 +27,7 @@ export class NoteManager {
 		.doc(note.id)
 		.set({...note})
 		.then(onSuccess)
-		.catch(err =>
-		  (onError && typeof (onError) === 'function') ?
-			onError(err) :
-			console.error(err)
-		);
+		.catch(err => onError(err))
 	}
   };
 
@@ -49,11 +45,7 @@ export class NoteManager {
 		  .doc(updatedNote.id)
 		  .update({...updatedNote})
 		  .then(onSuccess)
-		  .catch(err =>
-			(onError && typeof (onError) === 'function') ?
-			  onError(err) :
-			  console.error(err)
-		  );
+		  .catch(err => onError(err));
 	  }
 	}
   }
@@ -68,11 +60,7 @@ export class NoteManager {
 		  .doc(noteID)
 		  .delete()
 		  .then(onSuccess)
-		  .catch(err =>
-			(onError && typeof (onError) === 'function') ?
-			  onError(err) :
-			  console.error(err)
-		  );
+		  .catch(err => onError(err));
 	  }
 	}
   }
