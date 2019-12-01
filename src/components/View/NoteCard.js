@@ -1,13 +1,14 @@
 import React, {useContext, useState} from 'react';
 import {AppConsumer, AppContext} from "../../Context/Context";
-import {Card, Collapse, Icon, Skeleton, Typography} from "antd";
+import {Button, Card, Collapse, Icon, Skeleton, Typography, Modal} from "antd";
 import {useHistory} from 'react-router-dom';
 
+const {confirm} = Modal;
 const {Meta} = Card;
 const {Panel} = Collapse;
 const {Text, Paragraph} = Typography;
 
-export const NoteCard = ({note, onEditNote}) => {
+export const NoteCard = ({note, onEditNote, onDeleteNote}) => {
   const {noteManager} = useContext(AppContext);
   const history = useHistory();
 
@@ -70,6 +71,23 @@ export const NoteCard = ({note, onEditNote}) => {
 	history.push(`/browse/${note.id}`);
   };
 
+  function showConfirmDelete() {
+	confirm({
+	  title: 'Are you sure that you want to delete this note?',
+	  content: `${note.title} - ${note.type} (${note.createdAt})`,
+	  onOk() {
+		return new Promise((resolve, reject) => {
+		  onDeleteNote(note.id, () => {
+			resolve();
+		  });
+		})
+		  .catch(() => console.log('Oops errors!'));
+	  },
+	  onCancel() {
+	  },
+	});
+  }
+
   return (
 	<AppConsumer>
 	  {
@@ -90,10 +108,11 @@ export const NoteCard = ({note, onEditNote}) => {
 					  onClick={onViewNoteDetails}
 					/>,
 					<Icon
+					  onClick={showConfirmDelete}
 					  type="delete"
 					  key="delete"
-					  onClick={() => console.log('on delete note')}
-					/>,
+					/>
+					,
 					<Icon
 					  type="ellipsis"
 					  key="ellipsis"
@@ -124,7 +143,18 @@ export const NoteCard = ({note, onEditNote}) => {
 						  >
 							{noteDetails.type}
 						  </Text>
-						  <p>{note.createdAt}</p>
+						  <p
+							style={{
+							  marginTop: '2rem'
+							}}
+						  >
+							Created at: {note.createdAt}
+						  </p>
+						  {
+							note.updatedAt ?
+							  <p>Last updated: {note.updatedAt}</p> :
+							  ''
+						  }
 						</>
 					  }
 					/>

@@ -176,12 +176,21 @@ export class App extends React.Component {
 						 render={props => <Home {...props} />}/>
 				  <Route exact path="/browse"
 						 render={props =>
-						   <BrowseNotes onEditNote={this.onEditNote} {...props} />}
+						   <BrowseNotes
+							 onDeleteNote={this.onDeleteNote}
+							 onEditNote={this.onEditNote}
+							 {...props}
+						   />}
 				  />
 
 				  <Route path="/browse/:noteID"
 						 render={props =>
-						   <ViewNote {...props} />}
+						   <ViewNote
+							 onEditNote={this.onEditNote}
+							 onDeleteNote={this.onDeleteNote}
+							 {...props}
+						   />
+						 }
 				  />
 
 				  <Route path="/add"

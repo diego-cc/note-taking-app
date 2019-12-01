@@ -60,7 +60,7 @@ export class NoteManager {
 
   deleteNoteByID(noteID, updateRemote = true, onSuccess, onError) {
 	if (this.findNoteByID(noteID)) {
-	  this.notes.splice(this.findNoteIndexByID(noteID), 1);
+	  this.notes = this.notes.filter(note => note.id !== noteID);
 
 	  if (updateRemote) {
 		db
