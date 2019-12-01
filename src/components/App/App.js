@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Icon, Layout, Row, Select, Switch as ToggleSwitch, Typography} from 'antd';
+import {Col, Icon, Layout, Row, Switch as ToggleSwitch} from 'antd';
 import {SideNav} from "../Nav/SideNav";
 import {Route, Switch} from 'react-router-dom';
 import {FONT_FACES} from "../../Customisation/fontFaces";
@@ -68,13 +68,13 @@ export class App extends React.Component {
 	})
   };
 
-  onEditNote = updatedNote => {
+  onEditNote = (updatedNote, callback) => {
 	this.setState(prevState => {
 	  const {noteManager} = prevState;
 	  noteManager.editNote(updatedNote);
 
 	  return ({noteManager})
-	})
+	}, callback)
   };
 
   onDeleteNote = noteID => {
@@ -114,7 +114,7 @@ export class App extends React.Component {
 			noteManager,
 			loading: false
 		  })
-		}, () => console.dir(this.state));
+		})
 	  });
   }
 
@@ -175,7 +175,9 @@ export class App extends React.Component {
 				  <Route path="/" exact
 						 render={props => <Home {...props} />}/>
 				  <Route exact path="/browse"
-						 render={props => <BrowseNotes {...props} />}/>
+						 render={props =>
+						   <BrowseNotes onEditNote={this.onEditNote} {...props} />}
+				  />
 
 				  <Route path="/browse/:noteID"
 						 render={props =>

@@ -3,11 +3,8 @@ import {AppConsumer, AppContext} from "../../Context/Context";
 import {THEMES} from "../../Customisation/themes";
 import {Spinner} from "../Spinner/Spinner";
 import {NoteCard} from "./NoteCard";
-import {Button, Empty, Typography} from "antd";
-import {useParams, useHistory} from 'react-router-dom';
-import {Note} from "../../Model/Note";
-
-const {Text} = Typography;
+import {Button, Empty} from "antd";
+import {useHistory, useParams} from 'react-router-dom';
 
 export const ViewNote = props => {
   const history = useHistory();

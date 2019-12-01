@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {AutoComplete, Button, Form, Icon, Input, Popover, Select, Tooltip,} from 'antd';
+import {Button, Form, Icon, Input, Select, Tooltip,} from 'antd';
 import {TYPES} from "../../Model/Type";
 import {AppConsumer, AppContext} from "../../Context/Context";
 import {THEMES} from "../../Customisation/themes";

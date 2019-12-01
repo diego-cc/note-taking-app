@@ -1,7 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {THEMES} from "../../Customisation/themes";
 import {AddNoteForm} from "./AddNoteForm";
-import {AppConsumer, AppContext} from "../../Context/Context";
+import {AppConsumer} from "../../Context/Context";
 import {Spinner} from "../Spinner/Spinner";
 
 export const AddNote = props => {
