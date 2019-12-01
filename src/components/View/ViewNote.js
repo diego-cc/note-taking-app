@@ -30,7 +30,11 @@ export const ViewNote = props => {
 			  loading ?
 				<Spinner/> :
 				note ?
-				  <NoteCard note={note}/> :
+				  <NoteCard
+					onEditNote={props.onEditNote}
+					onDeleteNote={props.onDeleteNote}
+					note={note}
+				  /> :
 				  <Empty
 					description={
 					  <p

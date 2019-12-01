@@ -37,7 +37,10 @@ export const SideNav = ({theme}) => {
             </span>
 		  }
 		>
-		  <Menu.Item key={1.1} style={{textAlign: 'center'}}>
+		  <Menu.Item
+			key={1.1}
+			style={{textAlign: 'center'}}
+		  >
 			<SearchNotes/>
 		  </Menu.Item>
 		  <Menu.Item key={1.2} style={{textAlign: 'center'}}>

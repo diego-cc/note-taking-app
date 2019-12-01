@@ -21,7 +21,7 @@ export const SearchNotes = props => {
 			note.body.trim().toLowerCase().includes(searchText.trim().toLowerCase())
 		  ))
 		  .map(note =>
-			note.title.length > 10 ? <Option key={note.id}>`${note.title.slice(0, 10)}...`</Option> : <Option key={note.id}>{note.title}</Option>
+			note.title.length > 10 ? <Option key={note.id}>{`${note.title.slice(0, 10)}...`}</Option> : <Option key={note.id}>{note.title}</Option>
 		  )]
 	  )
 	}
