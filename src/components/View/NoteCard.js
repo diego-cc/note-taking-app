@@ -1,17 +1,48 @@
 import React, {useState} from 'react';
 import {AppConsumer} from "../../Context/Context";
 import {Card, Collapse, Icon, Skeleton, Typography} from "antd";
+import {useHistory} from 'react-router-dom';
 
 const {Meta} = Card;
 const {Panel} = Collapse;
 const {Text, Paragraph} = Typography;
 
-export const ViewNote = ({note}) => {
+export const NoteCard = ({note}) => {
+  const history = useHistory();
+  const [noteDetails, setNoteDetails] = useState({
+	title: note ? note.title : '',
+	body: note ? note.body : '',
+	type: note ? note.type : ''
+  });
+
   const [detailsActive, setDetailsActive] = useState(false);
-  console.log('Details active:', detailsActive);
+  const [isEditing, setIsEditing] = useState({
+	title: false,
+	body: false,
+	type: false
+  });
+
+  const onEditingNote = detailName => {
+    setIsEditing({
+	  ...isEditing,
+	  [detailName]: true
+	})
+  };
 
   const onChangeDetails = (detailName, detail) => {
-	console.log(detailName, detail);
+    setIsEditing({
+	  ...isEditing,
+	  [detailName]: false
+	});
+
+	setNoteDetails({
+	  ...noteDetails,
+	  [detailName]: detail
+	})
+  };
+
+  const onViewNoteDetails = () => {
+    history.push(`/browse/${note.id}`);
   };
 
   return (
@@ -29,6 +60,11 @@ export const ViewNote = ({note}) => {
 				<Card
 				  actions={[
 					<Icon
+					  type="info-circle"
+					  key="info"
+					  onClick={onViewNoteDetails}
+					/>,
+					<Icon
 					  type="delete"
 					  key="delete"
 					  onClick={() => console.log('on delete note')}
@@ -41,15 +77,27 @@ export const ViewNote = ({note}) => {
 				>
 				  <Skeleton loading={loading} avatar active>
 					<Meta
-					  title={<Text editable={true}>{note.title}</Text>}
+					  title={
+					    <Text
+						  editable={{
+						    onChange: detail => onChangeDetails('title', detail),
+							onStart: () => onEditingNote('title'),
+							editing: isEditing.title
+						  }}
+						>
+						  {`${noteDetails.title.slice(0, 10)}...`}
+					    </Text>
+					  }
 					  description={
 						<>
 						  <Text
 							editable={{
-							  onChange: detail => onChangeDetails('type', detail)
+							  onChange: detail => onChangeDetails('type', detail),
+							  onStart: () => setIsEditing(true),
+							  editing: isEditing.type
 							}}
 						  >
-							{note.type}
+							{noteDetails.type}
 						  </Text>
 						  <p>{note.createdAt}</p>
 						</>
@@ -63,7 +111,7 @@ export const ViewNote = ({note}) => {
 				editable={true}
 				style={{textAlign: 'justify'}}
 			  >
-				{note.body}
+				{noteDetails.body}
 			  </Paragraph>
 			</Panel>
 		  </Collapse>

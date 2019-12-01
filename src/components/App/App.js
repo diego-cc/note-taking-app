@@ -14,6 +14,7 @@ import {NoteManager} from "../../Model/NoteManager";
 import {AppProvider} from "../../Context/Context";
 import {db} from "../../Firebase/Firebase";
 import {Note} from "../../Model/Note";
+import {ViewNote} from "../View/ViewNote";
 
 const {Content, Footer, Header} = Layout;
 
@@ -35,7 +36,10 @@ export class App extends React.Component {
   onThemeChange = () => {
 	this.setState(prevState => ({
 	  theme: prevState.theme === THEMES.Light ? THEMES.Dark : THEMES.Light
-	}))
+	}), () => {
+	  // remember settings
+	  localStorage.setItem('theme', JSON.stringify(this.state.theme));
+	})
   };
 
   setUpWindowSize = () => {
@@ -51,8 +55,8 @@ export class App extends React.Component {
   };
 
   onAddNote = note => {
-    const {noteManager} = this.state;
-    this.setState({
+	const {noteManager} = this.state;
+	this.setState({
 	  loading: true
 	}, () => {
 	  noteManager.addNote(note, true, () => {
@@ -85,6 +89,14 @@ export class App extends React.Component {
   componentDidMount() {
 	window.addEventListener('resize', this.setUpWindowSize);
 	window.addEventListener('orientationChange', this.setUpWindowSize);
+	let theme;
+
+	// get user settings, if any has been saved
+	const themeJSON = localStorage.getItem('theme');
+	if (themeJSON) {
+	  theme = JSON.parse(themeJSON);
+	  this.setState({theme})
+	}
 
 	// fetch notes from remote here
 	db
@@ -140,7 +152,7 @@ export class App extends React.Component {
 			  >
 				<ToggleSwitch
 				  onChange={this.onThemeChange}
-				  defaultChecked
+				  checked={this.state.theme === THEMES.Light}
 				  checkedChildren={<Icon type="bulb"/>}
 				  unCheckedChildren={<Icon type="bulb"/>}
 				/>
@@ -162,8 +174,14 @@ export class App extends React.Component {
 				<Switch>
 				  <Route path="/" exact
 						 render={props => <Home {...props} />}/>
-				  <Route path="/browse"
+				  <Route exact path="/browse"
 						 render={props => <BrowseNotes {...props} />}/>
+
+				  <Route path="/browse/:noteID"
+						 render={props =>
+						   <ViewNote {...props} />}
+				  />
+
 				  <Route path="/add"
 						 render={props =>
 						   <AddNote

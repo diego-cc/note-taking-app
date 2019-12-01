@@ -1,7 +1,7 @@
 import React from 'react';
 import {THEMES} from "../../Customisation/themes";
 import {AppConsumer} from "../../Context/Context";
-import {ViewNote} from "./ViewNote";
+import {NoteCard} from "../View/NoteCard";
 import {Empty, Icon, Spin} from "antd";
 import {Spinner} from "../Spinner/Spinner";
 
@@ -24,7 +24,7 @@ export const BrowseNotes = props => (
 				<Spinner /> :
 				noteManager.notes.length ?
 				noteManager.notes.map((note, index) => (
-				  <ViewNote
+				  <NoteCard
 					key={index}
 					note={note}
 				  />
