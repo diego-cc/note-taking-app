@@ -229,9 +229,9 @@ export class App extends React.Component {
   /**
    * Shows notifications related to network changes (online/offline)
    * @param {string} message - Title of the notification
-   * @param {string} description - Body text of the notification
+   * @param {string|null} description - Body text of the notification (default: null)
    */
-  openNetworkNotification = (message, description) => {
+  openNetworkNotification = (message, description = null) => {
 	notification.open({
 	  message,
 	  description
