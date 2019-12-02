@@ -13,9 +13,16 @@ import {AddNote} from "../Add/AddNote";
 import {NotFound} from "../404/NotFound";
 import {NoteManager} from "../../Model/NoteManager";
 import {AppProvider} from "../../Context/Context";
-import {db} from "../../Firebase/Firebase";
 import {Note} from "../../Model/Note";
 import {ViewNote} from "../View/ViewNote";
+
+let db;
+
+if (process.env.NODE_ENV === 'development') {
+  db = require('../../Firebase/Firebase.dev').db;
+} else {
+  db = require('../../Firebase/Firebase.prod').db;
+}
 
 const {Content, Footer, Header} = Layout;
 
@@ -229,9 +236,9 @@ export class App extends React.Component {
   /**
    * Shows notifications related to network changes (online/offline)
    * @param {string} message - Title of the notification
-   * @param {string} description - Body text of the notification
+   * @param {string|null} description - Body text of the notification (default: null)
    */
-  openNetworkNotification = (message, description) => {
+  openNetworkNotification = (message, description = null) => {
 	notification.open({
 	  message,
 	  description

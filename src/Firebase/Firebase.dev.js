@@ -1,5 +1,5 @@
 /**
- * Firebase.js
+ * Firebase.dev..js
  */
 import firebase from 'firebase/app'
 import 'firebase/app'

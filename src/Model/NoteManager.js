@@ -2,7 +2,14 @@
  * NoteManager.js
  */
 import moment from "moment";
-import {db} from "../Firebase/Firebase";
+
+let db;
+
+if (process.env.NODE_ENV === 'development') {
+  db = require('../Firebase/Firebase.dev').db;
+} else {
+  db = require('../Firebase/Firebase.prod').db;
+}
 
 /**
  * Manages all notes present in the application

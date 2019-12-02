@@ -33,4 +33,7 @@ These features may or may not be implemented in the future:
 - Attach a picture to a note
 - Import / export notes in text format
 - Change the font (additional customisation option)
+
+## License
+[MIT](https://github.com/diego-cc/note-taking-app/blob/master/LICENSE "MIT License")
  
