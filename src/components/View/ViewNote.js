@@ -33,6 +33,7 @@ export const ViewNote = props => {
 		  <div style={{textAlign: 'center'}}>
 			<h2
 			  style={{
+				fontSize: '2.2rem',
 				textAlign: "center",
 				color: theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`,
 				marginBottom: '4rem'

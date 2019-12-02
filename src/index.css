@@ -7,7 +7,6 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-size: 1rem;
-    background-color: yellow;
 }
 
 @media (max-width: 375px) {
