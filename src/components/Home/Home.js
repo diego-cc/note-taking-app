@@ -1,14 +1,16 @@
+/**
+ * Home.js
+ */
 import React from 'react';
 import {THEMES} from "../../Customisation/themes";
 import {AppConsumer} from "../../Context/Context";
 import {Icon} from "antd";
 
-export const Home = props => {
-  const noteDetailsInstructions = [
-	`Clicking on the <span><Icon title="View note" type="info-circle"/></span> icon allows you to view details of an individual note on a separate page.`,
-	`Clicking on the <span><Icon title="Delete note" type="delete"/></span> icon deletes a note (you will be prompted to confirm it).`,
-	`Clicking on the <span><Icon title="Note text" type="ellipsis"/></span> icon expands a note's text.`,
-  ];
+/**
+ * Home component - It's rendered when the / route is accessed
+ * @returns {*}
+ */
+export const Home = () => {
   return (
 	<AppConsumer>
 	  {

@@ -1,3 +1,6 @@
+/**
+ * SideNav.js
+ */
 import React, {useState} from 'react';
 import {Icon, Layout, Menu} from "antd";
 import {Link} from "react-router-dom";
@@ -6,6 +9,11 @@ import {SearchNotes} from "../Search/SearchNotes";
 const {Sider} = Layout;
 const {SubMenu} = Menu;
 
+/**
+ * SideNav component - the side bar of this application
+ * @param {"light"|"dark"} theme
+ * @returns {*}
+ */
 export const SideNav = ({theme}) => {
   const [collapsed, setCollapsed] = useState(true);
 

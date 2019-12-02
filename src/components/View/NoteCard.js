@@ -1,3 +1,6 @@
+/**
+ * NoteCard.js
+ */
 import React, {useContext, useEffect, useState} from 'react';
 import {AppConsumer, AppContext} from "../../Context/Context";
 import {Card, Col, Collapse, Icon, Modal, Row, Skeleton, Typography} from "antd";
@@ -8,11 +11,16 @@ const {Meta} = Card;
 const {Panel} = Collapse;
 const {Text, Paragraph} = Typography;
 
+/**
+ * NoteCard component - renders a card containing details of a single note
+ * @param {Note} note - The note to be rendered
+ * @param {Function} onEditNote - calls the onEditNote handler on App.js
+ * @param {Function} onDeleteNote - calls the onDeleteNote handler on App.js
+ * @returns {*}
+ */
 export const NoteCard = ({note, onEditNote, onDeleteNote}) => {
   const {noteManager} = useContext(AppContext);
   const history = useHistory();
-
-  // const [currentNote, setCurrentNote] = useState(null);
 
   const [detailsActive, setDetailsActive] = useState(false);
   const [isEditing, setIsEditing] = useState({
@@ -129,17 +137,20 @@ export const NoteCard = ({note, onEditNote, onDeleteNote}) => {
 						<Icon
 						  type="info-circle"
 						  key="info"
+						  title="View note details"
 						  onClick={onViewNoteDetails}
 						/>,
 						<Icon
 						  onClick={showConfirmDelete}
 						  type="delete"
+						  title="Delete"
 						  key="delete"
 						/>
 						,
 						<Icon
 						  type="ellipsis"
 						  key="ellipsis"
+						  title="Expand note text"
 						  onClick={() => setDetailsActive(!detailsActive)}/>
 					  ]}
 					>

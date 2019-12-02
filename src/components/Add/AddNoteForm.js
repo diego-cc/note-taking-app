@@ -1,3 +1,6 @@
+/**
+ * AddNoteForm.js
+ */
 import React from 'react';
 
 import {Button, Form, Icon, Input, Select, Tooltip,} from 'antd';
@@ -8,6 +11,11 @@ import {Note} from "../../Model/Note";
 
 const {Option} = Select;
 
+/**
+ * This component contains the form that is shown when the /add route is accessed
+ * It will be wrapped by AddNoteForm (it's a little quirk of Ant Design to make it work
+ * as intended)
+ */
 class AddNote extends React.Component {
   state = {
 	confirmDirty: false
@@ -43,10 +51,6 @@ class AddNote extends React.Component {
 		xs: {
 		  span: 24
 		}
-		/*sm: {
-		  span: 16,
-		  offset: 8,
-		},*/
 	  },
 	};
 

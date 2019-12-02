@@ -1,3 +1,6 @@
+/**
+ * BrowseNotes.js
+ */
 import React, {useContext} from 'react';
 import {THEMES} from "../../Customisation/themes";
 import {AppConsumer, AppContext} from "../../Context/Context";
@@ -6,6 +9,18 @@ import {Empty, Icon, notification} from "antd";
 import {Spinner} from "../Spinner/Spinner";
 import moment from "moment";
 
+/**
+ * Props for BrowseNotes
+ * @typedef {Object} BrowseNotesProps
+ * @property {Function} onEditNote - calls the onEditNote handler from App.js
+ * @property {Function} onDeleteNote - calls the onDeleteNote handler from App.js
+ */
+/**
+ *
+ * @param {BrowseNotesProps} props
+ * @returns {*}
+ * @constructor
+ */
 export const BrowseNotes = props => {
   const {dismissDeletedNoteNotification} = useContext(AppContext);
 

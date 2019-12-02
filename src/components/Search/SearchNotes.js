@@ -1,3 +1,6 @@
+/**
+ * SearchNotes.js
+ */
 import React, {useContext, useState} from "react";
 import {AutoComplete, Icon, Input, Select} from "antd";
 import {AppContext} from "../../Context/Context";
@@ -5,7 +8,11 @@ import {useHistory} from 'react-router-dom';
 
 const {Option} = Select;
 
-export const SearchNotes = props => {
+/**
+ * SearchNotes component - allows users to search for notes (rendered on the sidebar)
+ * @returns {*}
+ */
+export const SearchNotes = () => {
   const {noteManager} = useContext(AppContext);
   const history = useHistory();
   const [dataSource, setDataSource] = useState([]);
@@ -21,14 +28,16 @@ export const SearchNotes = props => {
 			note.body.trim().toLowerCase().includes(searchText.trim().toLowerCase())
 		  ))
 		  .map(note =>
-			note.title.length > 10 ? <Option key={note.id}>{`${note.title.slice(0, 10)}...`}</Option> : <Option key={note.id}>{note.title}</Option>
+			note.title.length > 10 ?
+			  <Option key={note.id}>{`${note.title.slice(0, 10)}...`}</Option> :
+			  <Option key={note.id}>{note.title}</Option>
 		  )]
 	  )
 	}
   };
 
   const onSelect = (value) => {
-    if (value) {
+	if (value) {
 	  history.push(`/browse/${value}`);
 	}
   };
@@ -41,7 +50,7 @@ export const SearchNotes = props => {
 	  onSearch={onSearch}
 	  placeholder="Search notes..."
 	>
-	  <Input suffix={<Icon type="search" />} />
+	  <Input suffix={<Icon title="Search for a note" type="search"/>}/>
 	</AutoComplete>
   )
 };

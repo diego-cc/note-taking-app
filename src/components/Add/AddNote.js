@@ -1,3 +1,6 @@
+/**
+ * AddNote.js
+ */
 import React, {useContext} from 'react';
 import {Icon, notification} from "antd";
 import {THEMES} from "../../Customisation/themes";
@@ -5,6 +8,17 @@ import {AddNoteForm} from "./AddNoteForm";
 import {AppConsumer, AppContext} from "../../Context/Context";
 import {Spinner} from "../Spinner/Spinner";
 
+/**
+ * Props for AddNote
+ * @typedef {Object} AddNoteProps
+ * @property {Function} onAddNote - calls the onAddNote handler on App.js
+ */
+/**
+ * AddNote component - For the /add route
+ * @param {AddNoteProps} props
+ * @returns {*}
+ * @constructor
+ */
 export const AddNote = props => {
   const {dismissAddedNoteNotification} = useContext(AppContext);
 

@@ -1,3 +1,6 @@
+/**
+ * App.js
+ */
 import React from 'react';
 import {Col, Icon, Layout, notification, Row, Switch as ToggleSwitch} from 'antd';
 import {SideNav} from "../Nav/SideNav";
@@ -16,6 +19,9 @@ import {ViewNote} from "../View/ViewNote";
 
 const {Content, Footer, Header} = Layout;
 
+/**
+ * App component - manages the various routes of this application
+ */
 export class App extends React.Component {
   constructor(props) {
 	super(props);
@@ -31,25 +37,40 @@ export class App extends React.Component {
 	  dismissDeletedNoteNotification: this.dismissDeletedNoteNotification
 	};
 
-	this.dismissAddedNoteNotification = (callback) => {
+	/**
+	 * Dismisses the notification shown after a note is added
+	 * @param {Function|null} callback - Called after the notification is dismissed (default: null)
+	 */
+	this.dismissAddedNoteNotification = (callback = null) => {
 	  this.setState({
 		addedNote: false
 	  }, callback)
 	};
 
-	this.dismissDeletedNoteNotification = (callback) => {
+	/**
+	 * Dismisses the notification shown after a note is deleted
+	 * @param {Function|null} callback - Called after the notification is dismissed (default: null)
+	 */
+	this.dismissDeletedNoteNotification = (callback = null) => {
 	  this.setState({
 		deletedNote: false
 	  }, callback)
 	};
   }
 
+  /**
+   * Changes the font face of the application
+   * (NOT CURRENTLY IMPLEMENTED)
+   */
   onFontFaceChange = () => {
 	this.setState(prevState => ({
 	  fontFace: prevState.fontFace === FONT_FACES.Muli ? FONT_FACES.IndieFlower : FONT_FACES.Muli
 	}))
   };
 
+  /**
+   * Changes the theme of the application
+   */
   onThemeChange = () => {
 	this.setState(prevState => ({
 	  theme: prevState.theme === THEMES.Light ? THEMES.Dark : THEMES.Light
@@ -59,6 +80,10 @@ export class App extends React.Component {
 	})
   };
 
+  /**
+   * Detects the width of the window for styling purposes
+   * (This is a quick hack for inline styles, to override the styles injected by Ant Design)
+   */
   setUpWindowSize = () => {
 	if (window.innerWidth < 376) {
 	  this.setState({
@@ -71,11 +96,17 @@ export class App extends React.Component {
 	}
   };
 
-  onAddNote = (note, callback) => {
+  /**
+   * Adds a note (handled by {@link noteManager})
+   * @param {Note} note - note to be added
+   * @param {Function|null} callback - called after the note is added (default: null)
+   */
+  onAddNote = (note, callback = null) => {
 	const {noteManager} = this.state;
 	this.setState({
 	  loading: true
 	}, () => {
+	  // if user if offline, stop loading after .5 sec
 	  if (!navigator.onLine) {
 		setTimeout(() => {
 		  this.setState({
@@ -104,7 +135,12 @@ export class App extends React.Component {
 	})
   };
 
-  onEditNote = (updatedNote, callback) => {
+  /**
+   * Edits a note (handled by {@link noteManager})
+   * @param {Note} updatedNote - note to be edited
+   * @param {Function|null} callback - called after the note is edited (default: null)
+   */
+  onEditNote = (updatedNote, callback = null) => {
 	this.setState(prevState => {
 	  const {noteManager} = prevState;
 	  noteManager.editNote(updatedNote);
@@ -190,6 +226,11 @@ export class App extends React.Component {
 	  })
   }
 
+  /**
+   * Shows notifications related to network changes (online/offline)
+   * @param {string} message - Title of the notification
+   * @param {string} description - Body text of the notification
+   */
   openNetworkNotification = (message, description) => {
 	notification.open({
 	  message,
