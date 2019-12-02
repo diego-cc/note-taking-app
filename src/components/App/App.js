@@ -13,9 +13,16 @@ import {AddNote} from "../Add/AddNote";
 import {NotFound} from "../404/NotFound";
 import {NoteManager} from "../../Model/NoteManager";
 import {AppProvider} from "../../Context/Context";
-import {db} from "../../Firebase/Firebase";
 import {Note} from "../../Model/Note";
 import {ViewNote} from "../View/ViewNote";
+
+let db;
+
+if (process.env.NODE_ENV === 'development') {
+  db = require('../../Firebase/Firebase.dev').db;
+} else {
+  db = require('../../Firebase/Firebase.prod').db;
+}
 
 const {Content, Footer, Header} = Layout;
 

@@ -1,7 +1,10 @@
 /**
  * Firebase.js
  */
-import firebase from 'firebase';
+import firebase from 'firebase/app'
+import 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 
 /**
  * Basic configuration object for firebase
@@ -47,4 +50,3 @@ firebase
  */
 const db = firebase.firestore();
 export {db}
-
