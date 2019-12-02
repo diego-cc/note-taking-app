@@ -23,12 +23,12 @@ export const BrowseNotes = props => {
 	<AppConsumer>
 	  {
 		({theme, noteManager, loading, deletedNote}) => (
-		  <div>
+		  <div style={{textAlign: 'center'}}>
 			<h2
 			  style={{
 				textAlign: "center",
 				color: theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`,
-				marginBottom: '4rem'
+				marginBottom: '5rem'
 			  }}
 			>
 			  Browse notes
@@ -60,14 +60,15 @@ export const BrowseNotes = props => {
 						key={note.id}
 						note={note}
 					  />
-					)) : <Empty
+					)) :
+				  <Empty
 					description={
 					  <span
 						style={theme === THEMES.Light ?
 						  {color: 'rgba(0, 0, 0, .85)'} :
 						  {color: 'rgba(255, 255, 255, .65)'}
 						}>
-						No notes to display
+						No notes to show
 					  </span>
 					}
 				  />

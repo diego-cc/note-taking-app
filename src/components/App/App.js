@@ -132,11 +132,27 @@ export class App extends React.Component {
 
   componentDidMount() {
 	if (!navigator.onLine) {
-	  this.openOfflineNotification();
+	  this.openNetworkNotification(
+		'You seem to be offline',
+		`Don't worry though, your changes will be synchronised when you go back online`
+	  );
 	}
 
 	window.addEventListener('offline', () => {
-	  this.openOfflineNotification();
+	  if (!navigator.onLine) {
+		this.openNetworkNotification(
+		  'You seem to be offline',
+		  `Don't worry though, your changes will be synchronised when you go back online`
+		);
+	  }
+	});
+
+	window.addEventListener('online', () => {
+	  if (navigator.onLine) {
+		this.openNetworkNotification(
+		  'Back online! 🙂'
+		)
+	  }
 	});
 
 	window.addEventListener('resize', this.setUpWindowSize);
@@ -174,10 +190,10 @@ export class App extends React.Component {
 	  })
   }
 
-  openOfflineNotification = () => {
+  openNetworkNotification = (message, description) => {
 	notification.open({
-	  message: 'You seem to be offline',
-	  description: `Don't worry though, your changes will be synchronised when you go back online`
+	  message,
+	  description
 	})
   };
 

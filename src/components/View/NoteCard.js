@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {AppConsumer, AppContext} from "../../Context/Context";
-import {Card, Collapse, Icon, Modal, Skeleton, Typography} from "antd";
+import {Card, Col, Collapse, Icon, Modal, Row, Skeleton, Typography} from "antd";
 import {useHistory} from 'react-router-dom';
 
 const {confirm} = Modal;
@@ -102,88 +102,104 @@ export const NoteCard = ({note, onEditNote, onDeleteNote}) => {
 	<AppConsumer>
 	  {
 		({theme, loading}) => (
-		  <Collapse
-			style={{marginBottom: '5rem'}}
-			activeKey={detailsActive ? '1' : ''}
-		  >
-			<Panel
-			  showArrow={false}
-			  key="1"
-			  header={
-				<Card
-				  actions={[
-					<Icon
-					  type="info-circle"
-					  key="info"
-					  onClick={onViewNoteDetails}
-					/>,
-					<Icon
-					  onClick={showConfirmDelete}
-					  type="delete"
-					  key="delete"
-					/>
-					,
-					<Icon
-					  type="ellipsis"
-					  key="ellipsis"
-					  onClick={() => setDetailsActive(!detailsActive)}/>
-				  ]}
-				>
-				  <Skeleton loading={loading} avatar active>
-					<Meta
-					  title={
-						<Text
-						  editable={{
-							onChange: detail => onChangeDetails('title', detail),
-							onStart: () => onEditingNote('title'),
-							editing: isEditing.title
-						  }}
-						>
-						  {noteDetails.title}
-						</Text>
-					  }
-					  description={
-						<>
-						  <Text
-							editable={{
-							  onChange: detail => onChangeDetails('type', detail),
-							  onStart: () => onEditingNote('type'),
-							  editing: isEditing.type
-							}}
-						  >
-							{noteDetails.type}
-						  </Text>
-						  <p
-							style={{
-							  marginTop: '2rem'
-							}}
-						  >
-							Created at: {note.createdAt}
-						  </p>
-						  {
-							note.updatedAt ?
-							  <p>Last updated: {note.updatedAt}</p> :
-							  ''
-						  }
-						</>
-					  }
-					/>
-				  </Skeleton>
-				</Card>
-			  }
+		  <Row>
+			<Col
+			  xs={{
+				span: 24
+			  }}
+			  md={{
+				span: 12,
+				offset: 6
+			  }}
+			  lg={{
+				span: 8,
+				offset: 8
+			  }}
 			>
-			  <Paragraph
-				editable={{
-				  onChange: detail => onChangeDetails('body', detail),
-				  onStart: () => onEditingNote('body'),
-				  editing: isEditing.body
-				}}
-				style={{textAlign: 'justify'}}
+			  <Collapse
+				style={{marginBottom: '5rem'}}
+				activeKey={detailsActive ? '1' : ''}
 			  >
-				{noteDetails.body}
-			  </Paragraph>
-			</Panel>
-		  </Collapse>
+				<Panel
+				  showArrow={false}
+				  key="1"
+				  header={
+					<Card
+					  actions={[
+						<Icon
+						  type="info-circle"
+						  key="info"
+						  onClick={onViewNoteDetails}
+						/>,
+						<Icon
+						  onClick={showConfirmDelete}
+						  type="delete"
+						  key="delete"
+						/>
+						,
+						<Icon
+						  type="ellipsis"
+						  key="ellipsis"
+						  onClick={() => setDetailsActive(!detailsActive)}/>
+					  ]}
+					>
+					  <Skeleton loading={loading} avatar active>
+						<Meta
+						  title={
+							<Text
+							  editable={{
+								onChange: detail => onChangeDetails('title', detail),
+								onStart: () => onEditingNote('title'),
+								editing: isEditing.title
+							  }}
+							>
+							  {noteDetails.title}
+							</Text>
+						  }
+						  description={
+							<>
+							  <Text
+								editable={{
+								  onChange: detail => onChangeDetails('type', detail),
+								  onStart: () => onEditingNote('type'),
+								  editing: isEditing.type
+								}}
+							  >
+								{noteDetails.type}
+							  </Text>
+							  <p
+								style={{
+								  marginTop: '2rem'
+								}}
+							  >
+								Created at: {note.createdAt}
+							  </p>
+							  {
+								note.updatedAt ?
+								  <p>Last updated: {note.updatedAt}</p> :
+								  ''
+							  }
+							</>
+						  }
+						/>
+					  </Skeleton>
+					</Card>
+				  }
+				>
+				  <Paragraph
+					editable={{
+					  onChange: detail => onChangeDetails('body', detail),
+					  onStart: () => onEditingNote('body'),
+					  editing: isEditing.body
+					}}
+					style={{textAlign: 'justify'}}
+				  >
+					{noteDetails.body}
+				  </Paragraph>
+				</Panel>
+			  </Collapse>
+			</Col>
+		  </Row>
 		)
 	  }
 	</AppConsumer>

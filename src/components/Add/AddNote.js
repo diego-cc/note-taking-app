@@ -34,7 +34,8 @@ export const AddNote = props => {
 				color: theme === THEMES.Light ?
 					`rgba(0, 0, 0, 0.65)` :
 					`rgba(255, 255, 255, 0.65)`,
-				textAlign: 'center'
+				textAlign: 'center',
+				marginBottom: '5rem'
 			  }}
 			>
 			  Add a new note

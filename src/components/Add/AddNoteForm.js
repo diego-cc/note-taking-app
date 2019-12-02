@@ -29,23 +29,24 @@ class AddNote extends React.Component {
 	const formItemLayout = {
 	  labelCol: {
 		xs: {span: 24},
-		sm: {span: 8},
+		sm: {span: 4},
+		md: {span: 8}
 	  },
 	  wrapperCol: {
 		xs: {span: 24},
 		sm: {span: 16},
+		md: {span: 8}
 	  },
 	};
 	const tailFormItemLayout = {
 	  wrapperCol: {
 		xs: {
-		  span: 24,
-		  offset: 0,
-		},
-		sm: {
+		  span: 24
+		}
+		/*sm: {
 		  span: 16,
 		  offset: 8,
-		},
+		},*/
 	  },
 	};
 
@@ -133,7 +134,7 @@ class AddNote extends React.Component {
 			  }
 			</Form.Item>
 
-			<Form.Item {...tailFormItemLayout}>
+			<Form.Item {...tailFormItemLayout} style={{textAlign: 'center', marginTop: '5rem'}}>
 			  <Button type="primary" htmlType="submit">
 				Add note
 			  </Button>
