@@ -45,7 +45,7 @@ export const AddNote = props => {
 			}
 			<h2
 			  style={{
-			    fontSize: '2.2rem',
+			    fontSize: '2.5rem',
 				color: theme === THEMES.Light ?
 					`rgba(0, 0, 0, 0.65)` :
 					`rgba(255, 255, 255, 0.65)`,

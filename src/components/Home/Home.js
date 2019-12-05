@@ -17,14 +17,14 @@ export const Home = () => {
 		({theme}) => (
 		  <div
 			style={{
-			  fontSize: '1.8rem',
+			  fontSize: '2.1rem',
 			  color: theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`,
 			  textAlign: 'center'
 			}}
 		  >
 			<h2
 			  style={{
-			    fontSize: '2.2rem',
+			    fontSize: '2.5rem',
 				textAlign: 'center',
 				marginBottom: '4rem',
 				color: theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`

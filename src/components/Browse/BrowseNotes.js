@@ -41,7 +41,7 @@ export const BrowseNotes = props => {
 		  <div style={{textAlign: 'center'}}>
 			<h2
 			  style={{
-				fontSize: '2.2rem',
+				fontSize: '2.5rem',
 				textAlign: "center",
 				color: theme === THEMES.Light ? `rgba(0, 0, 0, 0.65)` : `rgba(255, 255, 255, 0.65)`,
 				marginBottom: '5rem'
