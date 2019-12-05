@@ -8,6 +8,7 @@ import {App} from './components/App/App';
 import * as serviceWorker from './serviceWorker';
 import './index.css';
 import "antd/dist/antd.css";
+import './components/Search/SearchNote.css';
 
 /**
  * Entry point of the application, renders <App /> wrapped by BrowserRouter

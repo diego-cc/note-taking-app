@@ -5,7 +5,6 @@ import React, {useContext, useState} from "react";
 import {AutoComplete, Icon, Input, Select} from "antd";
 import {AppContext} from "../../Context/Context";
 import {useHistory} from 'react-router-dom';
-import './SearchNote.css';
 
 const {Option} = Select;
 
