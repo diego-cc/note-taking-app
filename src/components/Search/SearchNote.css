@@ -1,0 +1,7 @@
+i.anticon.anticon-close-circle.ant-input-clear-icon {
+    color: red;
+}
+
+span.ant-input-suffix i[aria-label="icon: search"].anticon-search {
+    color: rebeccapurple;
+}

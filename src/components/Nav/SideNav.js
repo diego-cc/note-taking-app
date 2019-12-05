@@ -1,7 +1,7 @@
 /**
  * SideNav.js
  */
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Icon, Layout, Menu} from "antd";
 import {Link} from "react-router-dom";
 import {SearchNotes} from "../Search/SearchNotes";
@@ -16,6 +16,16 @@ const {SubMenu} = Menu;
  */
 export const SideNav = ({theme}) => {
   const [collapsed, setCollapsed] = useState(true);
+  const siderRef = useRef(null);
+
+  const handleSearchWhenCollapsed = e => {
+    if (e.key === '1.1') {
+      // search was clicked, check whether the sidebar is already collapsed
+	  if (collapsed) {
+	    console.log(siderRef.current);
+	  }
+	}
+  }
 
   return (
 	<Sider
@@ -25,6 +35,7 @@ export const SideNav = ({theme}) => {
 	  onCollapse={setCollapsed}
 	>
 	  <Menu
+		onClick={handleSearchWhenCollapsed}
 		theme={theme}
 		mode="inline"
 		inlineIndent={10}
@@ -36,6 +47,7 @@ export const SideNav = ({theme}) => {
 		  </Link>
 		</Menu.Item>
 		<SubMenu
+		  ref={siderRef}
 		  popupClassName="popup-notes"
 		  key={1}
 		  title={
