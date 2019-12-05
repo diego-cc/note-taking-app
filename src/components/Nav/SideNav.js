@@ -22,7 +22,7 @@ export const SideNav = ({theme}) => {
     if (e.key === '1.1') {
       // search was clicked, check whether the sidebar is already collapsed
 	  if (collapsed) {
-	    console.log(siderRef.current);
+
 	  }
 	}
   }
